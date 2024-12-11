@@ -1,9 +1,15 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
-import { HomeComponent } from './home/home.component';
+import { WelcomeComponent } from './welcome/welcome.component';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
+import { ProfileComponent } from './profile/profile.component';
+import { AuthGuard } from './auth/auth.guard'; // Import the Auth Guard
+import { MapComponent } from './map/map.component';
 
 export const routes: Routes = [
+  { path: '', component: WelcomeComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'home', component: HomeComponent },
-  { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirect root to 'login'
+  { path: 'register', component: RegisterComponent },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] }, // Protect profile
+  { path: 'map', component: MapComponent, canActivate: [AuthGuard] }, // Protect map
 ];
