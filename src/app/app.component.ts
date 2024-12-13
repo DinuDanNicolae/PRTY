@@ -19,7 +19,7 @@ import { AuthService } from './auth/auth.service'; // Import the AuthService
       <ng-template #loggedInNav>
         <a routerLink="/profile">Profile</a>
         <a routerLink="/map">Map</a>
-        <button (click)="logout()">Logout</button>
+        <a routerLink="/friends">Friends</a>
       </ng-template>
     </nav>
 
