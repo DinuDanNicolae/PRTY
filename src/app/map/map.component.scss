@@ -1,0 +1,12 @@
+/* Container to hold both the sidebar and the map */
+.container {
+    display: flex;
+    height: calc(100vh - 64px);
+    width: 100%;
+  }
+  
+  /* Map view styling */
+  .map-view {
+    flex: 1; /* Takes up the remaining space next to the sidebar */
+    height: 100%;
+  }
