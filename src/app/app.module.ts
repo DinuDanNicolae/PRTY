@@ -6,20 +6,26 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { HomeComponent } from './home/home.component';
-import { RouterModule } from '@angular/router';
+import { WelcomeComponent } from './welcome/welcome.component';
+import { ProfileComponent } from './profile/profile.component';
+import { FriendsComponent } from './friends/friends.component';
+import { MapComponent } from './map/map.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    WelcomeComponent,
     LoginComponent,
     RegisterComponent,
-    HomeComponent
+    HomeComponent,
+    ProfileComponent,
+    FriendsComponent,
+    MapComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     FormsModule,
-    RouterModule
+    AppRoutingModule
   ],
   bootstrap: [AppComponent]
 })

@@ -9,17 +9,12 @@ import { AuthService } from './auth/auth.service'; // Import the AuthService
   imports: [RouterModule, CommonModule],
   template: `
     <nav>
-      <!-- Navbar for logged-out users -->
-      <ng-container *ngIf="!isAuthenticated; else loggedInNav">
-        <a routerLink="/login">Login</a>
-        <a routerLink="/register">Register</a>
-      </ng-container>
 
       <!-- Navbar for logged-in users -->
       <ng-template #loggedInNav>
         <a routerLink="/profile">Profile</a>
         <a routerLink="/map">Map</a>
-        <a routerLink="/friends">Friends</a>
+        <button (click)="logout()">Logout</button>
       </ng-template>
     </nav>
 
