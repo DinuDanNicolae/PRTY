@@ -41,7 +41,7 @@ export class LoginComponent {
       .then(() => {
         alert('Login successful!');
         localStorage.setItem('authToken', 'example-token');
-        this.router.navigate(['/profile']); // Redirect to profile page
+        this.router.navigate(['/profile']); // Redirecționează către 'home' în loc de 'profile'
       })
       .catch((error) => {
         console.error('Error logging in:', error.message);

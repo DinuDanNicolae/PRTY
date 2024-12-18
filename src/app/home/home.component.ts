@@ -1,24 +1,33 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common'; // Import CommonModule for *ngIf
+import { Auth, signOut, User } from '@angular/fire/auth';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-profile',
   standalone: true,
+  imports: [CommonModule], // Add CommonModule here
   template: `
-    <div class="home-container">
-      <h1>Welcome to the Home Page</h1>
+    <div >
+      
     </div>
   `,
   styles: [
     `
-      .home-container {
+      div {
         text-align: center;
         margin-top: 50px;
       }
-
-      h1 {
-        color: #007bff;
+      button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
       }
-    `
-  ]
+    `,
+  ],
 })
-export class HomeComponent {}
+export class HomeComponent {
+  
+  
+}

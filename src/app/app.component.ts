@@ -11,8 +11,7 @@ import { AuthService } from './auth/auth.service'; // Import the AuthService
     <nav>
       <!-- Navbar for logged-out users -->
       <ng-container *ngIf="!isAuthenticated; else loggedInNav">
-        <a routerLink="/login">Login</a>
-        <a routerLink="/register">Register</a>
+       
       </ng-container>
 
       <!-- Navbar for logged-in users -->
