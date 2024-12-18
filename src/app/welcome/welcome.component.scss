@@ -1,0 +1,54 @@
+.welcome-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* schimbă din center în flex-start pentru a împinge conținutul spre partea de sus */
+    height: 100vh;
+    text-align: center;
+    background: url('/assets/images/background.jpg') no-repeat center center; 
+    background-size: cover;
+  
+    padding-top: 50px; /* un padding suplimentar pentru a împinge titlul puțin mai jos de top */
+  }
+  
+  .title {
+    font-size: 180px; /* de 3 ori mai mare decât 60px */
+    color: turquoise;
+    margin-bottom: 50px;
+    font-weight: bold;
+  }
+  
+  .buttons-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px; /* poți ajusta acest margin pentru a distanța secțiunea de butoane de titlu */
+  }
+  
+  .no-account {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: turquoise;
+  }
+  
+  .button-container {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .btn {
+    background: #fff;
+    border: 2px solid turquoise;
+    color: turquoise;
+    padding: 15px 30px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .btn:hover {
+    background: turquoise;
+    color: #fff;
+  }
+  

@@ -6,36 +6,9 @@ import { Auth, createUserWithEmailAndPassword, updateProfile } from '@angular/fi
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule],
-  template: `
-    <div>
-      <h2>Register</h2>
-      <form (ngSubmit)="register()">
-        <input
-          type="text"
-          [(ngModel)]="username"
-          name="username"
-          placeholder="Username"
-          required
-        />
-        <input
-          type="email"
-          [(ngModel)]="email"
-          name="email"
-          placeholder="Email"
-          required
-        />
-        <input
-          type="password"
-          [(ngModel)]="password"
-          name="password"
-          placeholder="Password"
-          required
-        />
-        <button type="submit">Register</button>
-      </form>
-    </div>
-  `
+  imports: [FormsModule], // Include FormsModule here
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent {
   username: string = '';
@@ -48,7 +21,6 @@ export class RegisterComponent {
     createUserWithEmailAndPassword(this.auth, this.email, this.password)
       .then((userCredential) => {
         const user = userCredential.user;
-
         // Update the user's profile with the username
         updateProfile(user, { displayName: this.username }).then(() => {
           alert('Registration successful! Please login.');
