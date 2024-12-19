@@ -1,54 +1,57 @@
 .welcome-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start; /* schimbă din center în flex-start pentru a împinge conținutul spre partea de sus */
-    height: 100vh;
-    text-align: center;
-    background: url('/assets/images/background.jpg') no-repeat center center; 
-    background-size: cover;
-  
-    padding-top: 50px; /* un padding suplimentar pentru a împinge titlul puțin mai jos de top */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh;
+  text-align: center;
+  background-image: url('/assets/images/back.jpg'); 
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat; /* Prevents tiling */
+  padding-top: 5vh;
+
+}
+
+/* Title styles updated for smaller size */
+.title {
+  font-size: 8vw; 
+  color: #DB2763;
+  margin-bottom: 3vh;
+  font-weight: bold;
+}
+
+/* Buttons Section */
+.buttons-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.button-container {
+  display: flex;
+  gap: 1.5vw; 
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn {
+  background: #BCE7FD;
+  border: 0.3vw solid rgb(0, 0, 0); 
+  color: #DB2763;
+  width: 12vw; /* Fixed width */
+  height: 4vw; /* Fixed height */
+  font-size: 1.5vw; 
+  font-weight: bold;
+  border-radius: 1vw; 
+  text-align: center;
+  line-height: 4vw; /* Align text vertically within the button */
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: black;
+    color: #BCE7FD;
   }
-  
-  .title {
-    font-size: 180px; /* de 3 ori mai mare decât 60px */
-    color: turquoise;
-    margin-bottom: 50px;
-    font-weight: bold;
-  }
-  
-  .buttons-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 50px; /* poți ajusta acest margin pentru a distanța secțiunea de butoane de titlu */
-  }
-  
-  .no-account {
-    font-size: 20px;
-    margin-bottom: 20px;
-    color: turquoise;
-  }
-  
-  .button-container {
-    display: flex;
-    gap: 20px;
-  }
-  
-  .btn {
-    background: #fff;
-    border: 2px solid turquoise;
-    color: turquoise;
-    padding: 15px 30px;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .btn:hover {
-    background: turquoise;
-    color: #fff;
-  }
-  
+}
+

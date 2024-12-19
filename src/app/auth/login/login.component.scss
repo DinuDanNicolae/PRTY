@@ -6,7 +6,7 @@
   background-color: #BCE7FD; 
 }
 
-.registration-form {
+.login-form {
   background-color: #DB2763; 
   padding: 2vh;            
   border-radius: 6vh;
@@ -17,19 +17,19 @@
   text-align: center;
 }
 
-.registration-form h2 {
+.login-form h2 {
   color: #333;
   margin-bottom: 2vh;
   font-size: 2vw;           
 }
 
-.registration-form form {
+.login-form form {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.registration-form input {
+.login-form input {
   background-color:#f6d7e1;
   margin-bottom: 1.5vh;
   padding: 1vh;
@@ -40,13 +40,13 @@
   font-size: 1.5vw;         
 }
 
-.registration-form p {
+.login-form p {
   margin: 1vh 0;
   color: #333;
   font-size: 1.5vw;         
 }
 
-.registration-form button {
+.login-form button {
   background-color: #333;
   color: #fff;
   padding: 1vh 2vh;
@@ -57,6 +57,6 @@
   font-size: 1.5vw;         
 }
 
-.registration-form button:hover {
+.login-form button:hover {
   background-color: #222;
 }

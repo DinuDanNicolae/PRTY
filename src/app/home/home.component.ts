@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule], // Add CommonModule here
+  imports: [CommonModule], 
   template: `
     <div >
       

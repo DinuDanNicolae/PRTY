@@ -7,28 +7,8 @@ import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
   selector: 'app-login',
   standalone: true,
   imports: [FormsModule],
-  template: `
-    <div>
-      <h2>Login</h2>
-      <form (ngSubmit)="login()">
-        <input
-          type="email"
-          [(ngModel)]="email"
-          name="email"
-          placeholder="Email"
-          required
-        />
-        <input
-          type="password"
-          [(ngModel)]="password"
-          name="password"
-          placeholder="Password"
-          required
-        />
-        <button type="submit">Login</button>
-      </form>
-    </div>
-  `
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
   email: string = '';
@@ -41,7 +21,7 @@ export class LoginComponent {
       .then(() => {
         alert('Login successful!');
         localStorage.setItem('authToken', 'example-token');
-        this.router.navigate(['/profile']); // Redirecționează către 'home' în loc de 'profile'
+        this.router.navigate(['/profile']);
       })
       .catch((error) => {
         console.error('Error logging in:', error.message);

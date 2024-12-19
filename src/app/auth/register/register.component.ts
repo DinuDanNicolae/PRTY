@@ -6,7 +6,7 @@ import { Auth, createUserWithEmailAndPassword, updateProfile } from '@angular/fi
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule], // Include FormsModule here
+  imports: [FormsModule], 
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
@@ -21,7 +21,6 @@ export class RegisterComponent {
     createUserWithEmailAndPassword(this.auth, this.email, this.password)
       .then((userCredential) => {
         const user = userCredential.user;
-        // Update the user's profile with the username
         updateProfile(user, { displayName: this.username }).then(() => {
           alert('Registration successful! Please login.');
           this.router.navigate(['/login']); // Redirect to login page

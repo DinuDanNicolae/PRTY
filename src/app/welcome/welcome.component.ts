@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
   selector: 'app-welcome',
   standalone: true,
   imports: [RouterModule],
-  templateUrl: './welcome.component.html', // Referință la template-ul HTML
-  styleUrls: ['./welcome.component.scss'] // Referință la fișierul de stiluri CSS
+  templateUrl: './welcome.component.html', 
+  styleUrls: ['./welcome.component.scss']
 })
 export class WelcomeComponent {}
