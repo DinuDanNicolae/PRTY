@@ -3,15 +3,15 @@ import { BehaviorSubject } from 'rxjs';
 import { Auth, onAuthStateChanged, signOut } from '@angular/fire/auth';
 
 @Injectable({
-  providedIn: 'root', // Ensures global availability
+  providedIn: 'root',
 })
 export class AuthService {
-  private authState = new BehaviorSubject<boolean>(false);
+  private authState = new BehaviorSubject<boolean | null>(null);
   isAuthenticated$ = this.authState.asObservable();
 
   constructor(private auth: Auth) {
     onAuthStateChanged(this.auth, (user) => {
-      this.authState.next(!!user); // Update auth state
+      this.authState.next(!!user);
     });
   }
 
@@ -19,7 +19,7 @@ export class AuthService {
     signOut(this.auth)
       .then(() => {
         console.log('User logged out');
-        this.authState.next(false); // Notify of logout
+        this.authState.next(false);
       })
       .catch((error) => {
         console.error('Logout error:', error.message);
