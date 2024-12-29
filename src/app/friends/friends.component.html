@@ -1,0 +1,24 @@
+<div class="friends-container">
+    <div class="friends-box">
+      <h2 class="friends-title">Your Friends</h2>
+      <div class="friends-list">
+        <ul>
+          <li *ngFor="let friend of friends">{{ friend.username }}</li>
+        </ul>
+      </div>
+    </div>
+  
+    <div class="add-friend-box">
+      <h2 class="friends-title">Add a Friend</h2>
+      <div class="add-friend-form">
+        <input
+          nz-input
+          type="text"
+          placeholder="Enter friend's username"
+          [(ngModel)]="newFriendUsername"
+        />
+        <button nz-button nzType="primary" (click)="addFriend()">Add Friend</button>
+      </div>
+    </div>
+  </div>
+  
