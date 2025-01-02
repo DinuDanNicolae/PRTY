@@ -1,62 +1,79 @@
+// Color Palette
+$background-color: #1b263b; // Dark blue
+$box-color: #415a77;        // Medium blue for box background
+$text-color: #e0e1dd;       // Light gray for text
+$secondary-text: #778da9;   // Muted gray for labels and borders
+$button-hover: darken(#415a77, 10%); // Darker hover effect for buttons
+$background-color-light: #7d9cb7;
+
+// General styles
 :host {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #BCE7FD; 
+  background-color: $background-color-light;
+  font-family: 'Arial', sans-serif;
 }
 
-.registration-form {
-  background-color: #DB2763; 
-  padding: 2vh;            
-  border-radius: 6vh;
-  box-shadow: 0 2vh 4vh rgba(0,0,0,0.3);
-  max-width: 40vw;          
-  width: 30%;
-  box-sizing: border-box;
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.register-box {
+  background-color: $box-color;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 400px;
   text-align: center;
 }
 
-.registration-form h2 {
-  color: #333;
-  margin-bottom: 2vh;
-  font-size: 2vw;           
+.register-title {
+  color: $text-color;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: bold;
 }
 
-.registration-form form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+input[nz-input] {
+  background-color: $background-color;
+  color: $text-color;
+  border: 1px solid $secondary-text;
+  border-radius: 5px;
+  padding: 0.75rem;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+
+  &:focus {
+    border-color: $text-color;
+    outline: none;
+  }
 }
 
-.registration-form input {
-  background-color:#f6d7e1;
-  margin-bottom: 1.5vh;
-  padding: 1vh;
-  width: 100%;
-  box-sizing: border-box;
-  border: 0.2vh solid #ccc;
-  border-radius: 1vh;
-  font-size: 1.5vw;         
-}
-
-.registration-form p {
-  margin: 1vh 0;
-  color: #333;
-  font-size: 1.5vw;         
-}
-
-.registration-form button {
-  background-color: #333;
-  color: #fff;
-  padding: 1vh 2vh;
+.register-button {
+  background-color: $box-color;
+  color: $text-color;
+  font-size: 1rem;
+  font-weight: bold;
   border: none;
-  border-radius: 1vh;
+  padding: 0.75rem 1rem;
+  width: 80%;
+  border-radius: 5px;
+  margin-top: 1rem;
   cursor: pointer;
   transition: background-color 0.3s;
-  font-size: 1.5vw;         
+
+  &:hover {
+    background-color: $button-hover;
+  }
 }
 
-.registration-form button:hover {
-  background-color: #222;
+.register-button:disabled {
+  background-color: lighten($box-color, 10%);
+  cursor: not-allowed;
 }

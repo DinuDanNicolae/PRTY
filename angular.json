@@ -60,7 +60,8 @@
             ],
             "styles": [
               "src/styles.scss",
-              "src/styles/_variables.scss"
+              "src/styles/_variables.scss",
+              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
             ],
             "scripts": []
           },

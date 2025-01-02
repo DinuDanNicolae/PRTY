@@ -8,86 +8,106 @@ import { AuthService } from './auth/auth.service';
   standalone: true,
   imports: [RouterModule, CommonModule],
   template: `
-    <nav>
-      <!-- Navbar for logged-out users -->
-      <ng-container *ngIf="!isAuthenticated; else loggedInNav">
-        <div class="nav-links">
+    <nav class="navbar">
+      <div class="brand">
+        <a routerLink="/">Let's PRTY</a>
+      </div>
+      <div class="nav-links">
+        <!-- Navbar for logged-out users -->
+        <ng-container *ngIf="!isAuthenticated; else loggedInNav">
           <a routerLink="/login">Login</a>
           <a routerLink="/register">Register</a>
-        </div>
-      </ng-container>
+        </ng-container>
 
-      <!-- Navbar for logged-in users -->
-      <ng-template #loggedInNav>
-        <div class="nav-links">
+        <!-- Navbar for logged-in users -->
+        <ng-template #loggedInNav>
           <a routerLink="/profile">Profile</a>
           <a routerLink="/map">Map</a>
           <a routerLink="/friends">Friends</a>
           <button (click)="logout()">Logout</button>
-        </div>
-      </ng-template>
+        </ng-template>
+      </div>
     </nav>
-
     <router-outlet></router-outlet>
   `,
   styles: [
     `
-      nav {
-        background-color: #f8f9fa;
-        padding: 15px;
+      /* General Navbar Styles */
+      .navbar {
         display: flex;
-        justify-content: center;
-        border-bottom: 1px solid #ddd;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background-color: #1b263b; /* Dark blue background */
+        color: #e0e1dd; /* Light text */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
       }
 
+      /* Brand/Logo */
+      .brand a {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #e0e1dd; /* Light text */
+        text-decoration: none;
+      }
+
+      .brand a:hover {
+        color: #778da9; /* Muted blue hover */
+      }
+
+      /* Nav Links */
       .nav-links {
         display: flex;
         align-items: center;
         gap: 20px;
       }
 
-      nav a {
+      .nav-links a {
         text-decoration: none;
-        color: #007bff;
-        font-size: 16px;
-        padding: 5px 10px;
-        border: 1px solid transparent;
+        color: #e0e1dd; /* Light text */
+        font-size: 1rem;
+        padding: 8px 15px;
         border-radius: 5px;
-        transition: all 0.3s ease;
+        transition: background-color 0.3s, color 0.3s;
       }
 
-      nav a:hover {
-        background-color: #e7f1ff;
-        border-color: #007bff;
+      .nav-links a:hover {
+        background-color: #415a77; /* Muted blue hover */
+        color: #e0e1dd;
       }
 
-      nav button {
-        background-color: #007bff;
-        color: white;
-        font-size: 16px;
-        padding: 5px 15px;
-        border: 1px solid #007bff;
+      /* Button Styles */
+      .nav-links button {
+        background-color: #415a77;
+        color: #e0e1dd;
+        font-size: 1rem;
+        padding: 8px 15px;
+        border: none;
         border-radius: 5px;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: background-color 0.3s, color 0.3s;
       }
 
-      nav button:hover {
-        background-color: white;
-        color: #007bff;
+      .nav-links button:hover {
+        background-color: #778da9; /* Lighter blue */
+        color: #fff;
       }
 
-      nav button:focus {
-        outline: 2px solid #0056b3;
+      .nav-links button:focus {
+        outline: 2px solid #e0e1dd;
       }
     `,
   ],
 })
+
 export class AppComponent implements OnInit {
   isAuthenticated: boolean = false;
 
-  constructor(private authService: AuthService) {}
-
+  constructor(private authService: AuthService, private router: Router) {}
+  
   ngOnInit() {
     this.authService.isAuthenticated$.subscribe((authState) => {
       if (authState !== null) {
@@ -98,5 +118,6 @@ export class AppComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+    this.router.navigate(['/']);
   }
 }

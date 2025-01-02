@@ -1,0 +1,114 @@
+// Color Palette
+$background-color: #1b263b;
+$box-color: #415a77;
+$text-color: #e0e1dd;
+$secondary-text: #778da9;
+$button-hover: darken(#415a77, 10%);
+$background-color-light: #7d9cb7;
+
+// General Container
+.friends-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  padding: 20px;
+  min-height: 100vh;
+  background-color: $background-color-light;
+  font-family: 'Arial', sans-serif;
+}
+
+// Friends List Box
+.friends-box {
+  background-color: $box-color;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+}
+
+.friends-title {
+  color: $text-color;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.friends-list {
+  max-height: 300px;
+  overflow-y: scroll;
+  border: 1px solid $secondary-text;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: $background-color;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  padding: 10px;
+  border-bottom: 1px solid $secondary-text;
+  color: $text-color;
+  font-weight: bold;
+  font-size: 1.2rem;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+// Add Friend Box
+.add-friend-box {
+  background-color: $box-color;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+}
+
+.add-friend-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  input[nz-input] {
+    background-color: $background-color;
+    color: $text-color;
+    border: 1px solid $secondary-text;
+    border-radius: 5px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+
+    &:focus {
+      border-color: $text-color;
+      outline: none;
+    }
+  }
+
+  button {
+    background-color: $box-color;
+    color: $text-color;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    padding: 0.75rem 1rem;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: $button-hover;
+    }
+  }
+}
