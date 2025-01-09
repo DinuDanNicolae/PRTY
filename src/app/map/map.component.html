@@ -1,4 +1,43 @@
-<div class="container">
-   
+<div class="map-container">
+    <!-- loc pentru hartă -->
     <div #mapViewNode class="map-view"></div>
-</div>
+    <!-- tab pentru evenimente -->
+    <div class="event-tab" [class.open]="eventsForLocation.length > 0 || selectedEvent">
+        <!-- buton pentru închidere tab -->
+        <button *ngIf="!selectedEvent" class="close-btn" (click)="closeTab()">X</button>
+      
+        <!-- lista de evenimente -->
+        <ul *ngIf="!selectedEvent">
+          <li *ngFor="let event of eventsForLocation" (click)="showEventDetails(event)">
+            <strong>{{ event.Titlu }}</strong>
+            <span>{{ event.Data }}</span>
+          </li>
+        </ul>
+      
+        <!-- detalii eveniment -->
+        <div *ngIf="selectedEvent" class="event-details">
+            <!-- Buton pentru revenire -->
+            <button class="back-btn" (click)="backToList()">&#8592;</button>
+            
+            <!-- structura detaliilor evenimentului -->
+            <div class="details-container">
+              <img [src]="selectedEvent.URLImagine || 'default-image-url.jpg'" alt="Event Image" class="event-image" />
+              <div class="details-content">
+                <div class="details-header">
+                </div>
+                <h2>{{ selectedEvent.Titlu }}</h2>
+                <p><strong>Ora:</strong> {{ selectedEvent.Ora }}</p>
+                <p><strong>Data:</strong> {{ selectedEvent.Data }}</p>
+                <p><strong>Locație:</strong> {{ selectedEvent.Locatie }}</p>
+                <p><strong>Adresă:</strong> {{ selectedEvent.Adresa }}</p>
+              </div>
+            </div>
+          </div>
+          
+          
+      </div>
+      
+  
+    <!-- buton de recenter -->
+    <button class="locate-button" (click)="recentreOnUser()">Recenter</button>
+  </div>

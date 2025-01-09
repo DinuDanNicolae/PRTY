@@ -1,220 +1,262 @@
-import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
-import Map from '@arcgis/core/Map';
-import MapView from '@arcgis/core/views/MapView';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  Output,
+  EventEmitter,
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import esriConfig from '@arcgis/core/config';
 import WebMap from '@arcgis/core/WebMap';
-import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
-import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
-import esriConfig from "@arcgis/core/config";
-import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer';
+import MapView from '@arcgis/core/views/MapView';
+import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import Point from '@arcgis/core/geometry/Point';
 import Graphic from '@arcgis/core/Graphic';
 
 @Component({
-  selector: "app-map",
+  selector: 'app-map',
   standalone: true,
-  templateUrl: "./map.component.html",
-  styleUrls: ["./map.component.scss"]
+  imports: [CommonModule],
+  templateUrl: './map.component.html',
+  styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements OnInit {
   @Output() mapLoadedEvent = new EventEmitter<boolean>();
-  @ViewChild("mapViewNode", { static: true }) private mapViewEl!: ElementRef;
+  @ViewChild('mapViewNode', { static: true }) private mapViewEl!: ElementRef;
 
-  map!: __esri.Map;
+  map!: __esri.WebMap;
   view!: __esri.MapView;
   graphicsLayer!: __esri.GraphicsLayer;
 
+  userLocation!: Point;
   center = [26.1025, 44.4268];
-  zoom = 12;
-  basemap = "streets-vector";
+  zoom = 15;
+  basemap = 'streets-vector';
   loaded = false;
+  eventsForLocation: { Titlu: string; Data: string }[] = [];
+  selectedEvent: any = null;
 
-  overpassQuery = `[out:json][timeout:25];
-  (
-    node["amenity"="restaurant"](44.3,25.9,44.6,26.3);
-    node["amenity"="bar"](44.3,25.9,44.6,26.3);
-    node["amenity"="pub"](44.3,25.9,44.6,26.3);
-  );
-  out body;
-  >;
-  out skel qt;`;
 
-  constructor() { }
+  private alreadyAddedAddresses = new Set<string>();
+
+  constructor() {}
 
   ngOnInit() {
     this.initializeMap().then(() => {
       this.loaded = this.view.ready;
       this.mapLoadedEvent.emit(true);
 
-      // Arată locația utilizatorului și centrează harta
-      this.showUserLocation();
-
-      // Încarcă datele Overpass și afișează-le
-      this.fetchOverpassData().then(geojson => {
-        this.addGeoJSONLayer(geojson);
-      }).catch(err => console.error("Error fetching Overpass data:", err));
+      this.centerOnUserLocation();
+      this.addReturnToUserButton();
+      this.loadEventsFromFirestore();
+      this.setupClickHandler();
     });
   }
 
   async initializeMap() {
     esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurFqD00vY7bGuzgL7YVpcSL4oyGcwxAqV3Uu7xyCDF0EIydT6fSsCqOs3MDqSSwpLPHtCZWSJXGDVa6La0DaUc0zZJQ-_hEM7L7bbF0GLAYjdW5AOzKYgqgEfqhAQ4eKFLLbdyB_uzund6K7MHw-50z3EPmHemdjQ6Zh7OE4c7agS0pw-9AvEJoUXUOSPX8aKWCrdGhJtkOQfrdruoOhu-w4.AT1_vizk5X9t";
 
-    const mapProperties: __esri.WebMapProperties = {
-      basemap: this.basemap
-    };
-    this.map = new WebMap(mapProperties);
 
-    this.addGraphicsLayer();
+    this.map = new WebMap({
+      basemap: this.basemap,
+    });
 
-    const mapViewProperties: __esri.MapViewProperties = {
+    this.view = new MapView({
       container: this.mapViewEl.nativeElement,
       center: this.center as [number, number],
       zoom: this.zoom,
-      map: this.map
-    };
-    this.view = new MapView(mapViewProperties);
-
-    const restaurantsLayer = new FeatureLayer({
-      url: "https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/US_Restaurants/FeatureServer/0",
-      outFields: ["*"]
+      map: this.map,
     });
-  
-    this.map.add(restaurantsLayer);
+
+    this.graphicsLayer = new GraphicsLayer();
+    this.map.add(this.graphicsLayer);
 
     try {
       await this.view.when();
-      console.log("ArcGIS map loaded");
+      console.log('Map loaded successfully.');
       return this.view;
-    } catch (error: any) {
-      console.error("Error loading the map: ", error);
-      alert("Error loading the map");
+    } catch (error) {
+      console.error('Error loading map:', error);
       return null;
     }
   }
 
-  addGraphicsLayer() {
-    this.graphicsLayer = new GraphicsLayer();
-    this.map.add(this.graphicsLayer);
-  }
-
-  async fetchOverpassData(): Promise<any> {
-    const response = await fetch("https://overpass-api.de/api/interpreter", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({ data: this.overpassQuery })
+  setupClickHandler() {
+    this.view.on('click', async (event: __esri.ViewClickEvent) => {
+      const hitTestResponse = await this.view.hitTest(event);
+  
+      const graphicResult = hitTestResponse.results.find(
+        (result) =>
+          'graphic' in result &&
+          (result.graphic as __esri.Graphic).layer === this.graphicsLayer
+      );
+  
+      if (graphicResult && 'graphic' in graphicResult) {
+        const graphic = graphicResult.graphic as __esri.Graphic;
+        const events = graphic.attributes?.events || [];
+        this.eventsForLocation = events.sort(
+          (a: any, b: any) =>
+            new Date(a.Data).getTime() - new Date(b.Data).getTime()
+        );
+      }
     });
-
-    const overpassData = await response.json();
-    return this.convertOverpassToGeoJSON(overpassData);
   }
-
-  convertOverpassToGeoJSON(overpassData: any) {
-    const features = overpassData.elements
-      .filter((el: any) => el.type === 'node')
-      .map((node: any) => {
-        return {
-          type: "Feature",
-          geometry: {
-            type: "Point",
-            coordinates: [node.lon, node.lat]
-          },
-          properties: node.tags
-        };
-      });
-
-    return {
-      type: "FeatureCollection",
-      features: features
-    };
+  
+  
+  closeTab() {
+    this.eventsForLocation = [];
+    this.selectedEvent = null;
   }
-
-  addGeoJSONLayer(geojson: any) {
-    const blob = new Blob([JSON.stringify(geojson)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-
-    const geojsonLayer = new GeoJSONLayer({
-      url: url,
-      labelingInfo: [{
-        symbol: {
-          type: "text",
-          color: "black",
-          haloColor: "white",
-          haloSize: "1px",
-          font: {
-            size: 10,
-            family: "Arial Unicode MS"
-          }
-        },
-        labelExpressionInfo: {
-          expression: "$feature.name"
-        },
-        labelPlacement: "above-center"
-      }]
-    });
-
-    this.map.add(geojsonLayer);
-    console.log("GeoJSON Layer added with Overpass POIs");
+  showEventDetails(event: any) {
+    this.selectedEvent = event;
   }
+  backToList() {
+    this.selectedEvent = null;
+  }
+    
 
-  showUserLocation() {
+  centerOnUserLocation() {
     if (!navigator.geolocation) {
-      console.error("Geolocation is not supported by this browser.");
+      console.error('Geolocation is not supported.');
       return;
     }
 
-    // Obține poziția curentă o singură dată
-    navigator.geolocation.getCurrentPosition((position) => {
-      const point = new Point({
-        longitude: position.coords.longitude,
-        latitude: position.coords.latitude
-      });
-
-      // Adaugă un marker pentru locația utilizatorului
-      this.addUserLocationGraphic(position.coords.latitude, position.coords.longitude);
-
-      // Centrează harta pe locația utilizatorului și mărește zoom-ul
-      this.view.center = point;
-      this.view.zoom = 15;
-
-    }, (error) => {
-      console.error("Error getting user's location:", error);
-    });
-
-    // Actualizează locația dacă utilizatorul se mișcă (opțional)
-    navigator.geolocation.watchPosition((position) => {
-      this.graphicsLayer.removeAll();
-      this.addUserLocationGraphic(position.coords.latitude, position.coords.longitude);
-
-      const point = new Point({
-        longitude: position.coords.longitude,
-        latitude: position.coords.latitude
-      });
-
-      // Centrează și menține zoom-ul mărit pe măsură ce utilizatorul se deplasează
-      this.view.center = point;
-      this.view.zoom = 15;
-    }, (error) => {
-      console.error("Error watching user's location:", error);
-    });
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        this.userLocation = new Point({ longitude, latitude });
+        this.view.goTo({ center: this.userLocation, zoom: this.zoom });
+        this.addUserLocationMarker(latitude, longitude);
+      },
+      (error) => {
+        console.error('Error getting user location:', error);
+      }
+    );
   }
 
-  addUserLocationGraphic(lat: number, lon: number) {
+  addUserLocationMarker(lat: number, lon: number) {
     const userPoint = new Point({ longitude: lon, latitude: lat });
-
     const markerSymbol = {
-      type: "simple-marker",
-      style: "circle",
-      color: "black",
-      size: "12px",
-      outline: {
-        color: "white",
-        width: 2
-      }
+      type: 'simple-marker',
+      style: 'circle',
+      color: 'black',
+      size: '12px',
+      outline: { color: 'white', width: 2 },
+    };
+    const graphic = new Graphic({
+      geometry: userPoint,
+      symbol: markerSymbol,
+    });
+    this.graphicsLayer.add(graphic);
+  }
+
+  addReturnToUserButton() {
+    const button = document.createElement('button');
+    button.innerText = 'Recenter';
+    button.className = 'locate-button';
+    button.addEventListener('click', () => {
+      this.recentreOnUser();
+    });
+    document.body.appendChild(button);
+  }
+
+  recentreOnUser() {
+    if (this.userLocation) {
+      this.view.goTo({ center: this.userLocation, zoom: this.zoom });
+    } else {
+      console.error('User location is not available.');
+    }
+  }
+
+  async loadEventsFromFirestore() {
+    const projectId = 'prty-2cc91';
+    const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/events`;
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+
+      const events = data.documents.map((doc: any) => ({
+        Titlu: doc.fields.Titlu.stringValue,
+        Ora: doc.fields.Ora.stringValue,
+        Data: doc.fields.Data.stringValue,
+        Adresa: doc.fields.Adresă.stringValue, 
+        Locatie: doc.fields.Locație.stringValue,
+        URLImagine: doc.fields['URL Imagine']?.stringValue || '',
+      }));
+      
+
+      events.forEach((event: any) => {
+        if (!this.alreadyAddedAddresses.has(event.Adresa)) {
+          this.alreadyAddedAddresses.add(event.Adresa);
+
+          this.geocodeAddressWithGoogle(event.Adresa).then((location) => {
+            if (location) {
+              const point = new Point({
+                latitude: location.lat,
+                longitude: location.lng,
+              });
+          
+             
+              const eventsAtLocation = events.filter((e: { Adresa: string }) => e.Adresa === event.Adresa);
+          
+              this.addEventMarker(point, eventsAtLocation);
+            }
+          });
+          
+        }
+      });
+    } catch (error) {
+      console.error('Error loading events:', error);
+    }
+  }
+
+  geocodeAddressWithGoogle(address: string): Promise<{ lat: number; lng: number } | null> {
+   
+    const specificAddress = `${address}, București, România`.trim();
+    console.log('Geocodăm adresa completată:', specificAddress);
+  
+    const googleApiKey = 'AIzaSyCovI73yXQQec4aitK4VerBAMRbIvPMe1Y';
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+      specificAddress
+    )}&key=${googleApiKey}`;
+  
+    return fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Răspuns Google Geocoding API pentru:', specificAddress, data);
+        if (data.status === 'OK' && data.results.length > 0) {
+          const location = data.results[0].geometry.location;
+          console.log('Locație geocodată:', location);
+          return { lat: location.lat, lng: location.lng };
+        } else {
+          console.warn('Geocodare eșuată pentru:', specificAddress, data);
+          return null;
+        }
+      })
+      .catch((error) => {
+        console.error('Eroare la geocodare pentru:', specificAddress, error);
+        return null;
+      });
+  }
+  
+
+  addEventMarker(point: Point, events: any[]) {
+    const tearDropSymbol = {
+      type: 'simple-marker',
+      style: 'circle',
+      color: 'orange',
+      size: '16px',
+      outline: { color: 'white', width: 2 },
     };
 
     const graphic = new Graphic({
-      geometry: userPoint,
-      symbol: markerSymbol
+      geometry: point,
+      symbol: tearDropSymbol,
+      attributes: { events },
     });
+
     this.graphicsLayer.add(graphic);
   }
 }
