@@ -1,0 +1,122 @@
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    min-height: 100vh;
+    background-color: #7d9cb7;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .profile-box {
+    background-color: #415a77;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+  }
+  
+  .profile-title {
+    color: #e0e1dd;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    font-weight: bold;
+  }
+  
+  .profile-details {
+    background-color: #1b263b;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    color: #e0e1dd;
+    font-size: 1rem;
+    border: 1px solid #778da9;
+  }
+  
+  .logout-button,
+  .checkins-button,
+  .close-checkins-button {
+    background-color: #415a77;
+    color: #e0e1dd;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 10px 0;
+  }
+  
+  .logout-button:hover,
+  .checkins-button:hover,
+  .close-checkins-button:hover {
+    background-color: #2d4a66;
+    transform: scale(1.05);
+  }
+  
+  .checkins-list {
+    background-color: #1b263b;
+    color: #e0e1dd;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 600px;
+  }
+  
+  .checkins-list h2 {
+    text-align: center;
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+  }
+  
+  .checkins-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .checkins-list li {
+    background-color: #415a77;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    font-size: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .checkins-list li strong {
+    color: #e0e1dd;
+    font-weight: bold;
+  }
+  
+  .checkins-list li p {
+    margin: 5px 0 0;
+    color: #778da9;
+  }
+
+  .remove-checkin-button {
+    background-color: #d9534f;
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .remove-checkin-button:hover {
+    background-color: #c9302c;
+    transform: scale(1.05);
+  }
+  
+  

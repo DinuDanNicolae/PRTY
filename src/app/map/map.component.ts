@@ -13,6 +13,11 @@ import MapView from '@arcgis/core/views/MapView';
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import Point from '@arcgis/core/geometry/Point';
 import Graphic from '@arcgis/core/Graphic';
+import { EventService } from './services/event.service';
+import { Auth } from '@angular/fire/auth';
+import { arrayUnion } from 'firebase/firestore';
+import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
+
 
 @Component({
   selector: 'app-map',
@@ -39,8 +44,9 @@ export class MapComponent implements OnInit {
 
 
   private alreadyAddedAddresses = new Set<string>();
+  checkedInEventIds = new Set<string>();
 
-  constructor() {}
+  constructor(private eventService: EventService, private auth: Auth) {}
 
   ngOnInit() {
     this.initializeMap().then(() => {
@@ -110,6 +116,7 @@ export class MapComponent implements OnInit {
   }
   showEventDetails(event: any) {
     this.selectedEvent = event;
+    this.loadEventDetails(event);
   }
   backToList() {
     this.selectedEvent = null;
@@ -177,14 +184,22 @@ export class MapComponent implements OnInit {
       const response = await fetch(url);
       const data = await response.json();
 
-      const events = data.documents.map((doc: any) => ({
-        Titlu: doc.fields.Titlu.stringValue,
-        Ora: doc.fields.Ora.stringValue,
-        Data: doc.fields.Data.stringValue,
-        Adresa: doc.fields.Adresă.stringValue, 
-        Locatie: doc.fields.Locație.stringValue,
-        URLImagine: doc.fields['URL Imagine']?.stringValue || '',
-      }));
+      const events = data.documents.map((doc: any) => {
+        // e.g. "projects/prty-2cc91/databases/(default)/documents/events/56tj8abEEIN6GVLuWYcx"
+        const fullPath: string = doc.name; 
+        // last part after the final slash
+        const docId = fullPath.split('/').pop();
+  
+        return {
+          docId,  // Store it here
+          Titlu: doc.fields.Titlu.stringValue,
+          Ora: doc.fields.Ora.stringValue,
+          Data: doc.fields.Data.stringValue,
+          Adresa: doc.fields.Adresă.stringValue,
+          Locatie: doc.fields.Locație.stringValue,
+          URLImagine: doc.fields['URL Imagine']?.stringValue || '',
+        };
+      });
       
 
       events.forEach((event: any) => {
@@ -240,15 +255,24 @@ export class MapComponent implements OnInit {
         return null;
       });
   }
-  
 
-  addEventMarker(point: Point, events: any[]) {
+  async addEventMarker(point: Point, events: any[]) {
+    let totalCheckins = 0;
+    for (const e of events) {
+      // For each event, get how many users checked in
+      const count = await this.eventService.getCheckinCount(e.docId);
+      totalCheckins += count;
+    }
+
+    const markerSize = this.calculateMarkerSize(totalCheckins);
+    const outlineWidth = this.calculateOutlineWidth(totalCheckins);
+    
     const tearDropSymbol = {
       type: 'simple-marker',
       style: 'circle',
-      color: 'orange',
-      size: '16px',
-      outline: { color: 'white', width: 2 },
+      color: this.getMarkerColor(totalCheckins),
+      size: `${markerSize}px`, // string with "px"
+      outline: { color: 'white', width: outlineWidth },
     };
 
     const graphic = new Graphic({
@@ -258,5 +282,73 @@ export class MapComponent implements OnInit {
     });
 
     this.graphicsLayer.add(graphic);
+  }
+
+  private calculateMarkerSize(checkins: number): number {
+    // A simple formula: base 10px + 2px for each user
+    // Adjust as you like
+    return 10 + checkins * 5;
+  }
+
+  private calculateOutlineWidth(checkins: number): number {
+    // A simple formula: base 2px + 1px for each user
+    // Adjust as you like
+    return 1 + checkins * 1;
+  }
+
+  private getMarkerColor(checkins: number): string {
+    if (checkins === 0) {
+      return 'orange';
+    } else if (checkins < 5) {
+      return '#FFA500'; // slightly different orange
+    } else if (checkins < 10) {
+      return 'red';
+    } else {
+      return 'purple'; // a color for 10+ checkins
+    }
+  }
+
+  async onCheckIn(event: any) {
+    if (!event?.docId) {
+      console.error('No docId for event:', event);
+      return;
+    }
+
+    const currentUserUid = this.auth.currentUser?.uid;
+    if (!currentUserUid) {
+      console.error('User is not authenticated!');
+      return;
+    }
+
+    try {
+      await this.eventService.checkIn(event.docId, currentUserUid);
+
+      await this.eventService.addCheckinToUserDoc(
+        currentUserUid,
+        event.Adresa,    // or event.Locatie
+        event.Titlu      // optional event title
+      );
+
+      // Locally mark this event as checked in
+      this.checkedInEventIds.add(event.docId);
+    } catch (err) {
+      console.error('Error checking in:', err);
+    }
+  }
+
+  // Called when event details are opened or loaded
+  async loadEventDetails(event: any) {
+    this.selectedEvent = event;  // show the UI for this event
+
+    const currentUserUid = this.auth.currentUser?.uid;
+    if (currentUserUid && event?.docId) {
+      // Check if doc exists in /events/{eventId}/checkins/{userId}
+      const isUserCheckedIn = await this.eventService.isUserCheckedIn(event.docId, currentUserUid);
+      if (isUserCheckedIn) {
+        this.checkedInEventIds.add(event.docId);
+      } else {
+        this.checkedInEventIds.delete(event.docId);
+      }
+    }
   }
 }

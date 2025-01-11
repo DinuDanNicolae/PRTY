@@ -109,3 +109,33 @@
 .event-details p {
   margin: 5px 0;
 }
+
+.check-in-button {
+  background-color: #007bff; /* Primary blue */
+  color: white;
+  font-size: 14px;
+  font-weight: bold; /* Emphasize the button text */
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px; /* Spacing above the button */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.check-in-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  transform: scale(1.05); /* Slightly enlarge the button */
+}
+
+.check-in-button:disabled {
+  background-color: #d6d6d6; /* Gray for disabled state */
+  color: #a0a0a0; /* Lighter text color */
+  cursor: not-allowed; /* Indicate unclickable */
+  box-shadow: none; /* Remove shadow for disabled button */
+}
+
+.check-in-button:disabled:hover {
+  transform: none; /* Prevent scaling when disabled */
+}

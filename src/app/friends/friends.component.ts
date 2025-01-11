@@ -55,6 +55,10 @@ export class FriendsComponent implements OnInit {
     }
   }
 
+  toggleCheckins(friend: any) {
+    friend.showCheckins = !friend.showCheckins;
+  }
+
   async addFriend() {
     const usersCollection = collection(this.firestore, 'users');
     const querySnapshot = await getDocs(usersCollection);

@@ -30,6 +30,15 @@
                 <p><strong>Data:</strong> {{ selectedEvent.Data }}</p>
                 <p><strong>Locație:</strong> {{ selectedEvent.Locatie }}</p>
                 <p><strong>Adresă:</strong> {{ selectedEvent.Adresa }}</p>
+
+                <button
+                  class="check-in-button"
+                  (click)="onCheckIn(selectedEvent)"
+                  [disabled]="checkedInEventIds.has(selectedEvent.docId)"
+                >
+                  {{ checkedInEventIds.has(selectedEvent.docId) ? 'Checked in' : 'Check in' }}
+                </button>
+
               </div>
             </div>
           </div>

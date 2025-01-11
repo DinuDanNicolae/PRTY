@@ -6,7 +6,6 @@ $secondary-text: #778da9;
 $button-hover: darken(#415a77, 10%);
 $background-color-light: #7d9cb7;
 
-// General Container
 .friends-container {
   display: flex;
   flex-direction: column;
@@ -19,7 +18,6 @@ $background-color-light: #7d9cb7;
   font-family: 'Arial', sans-serif;
 }
 
-// Friends List Box
 .friends-box {
   background-color: $box-color;
   padding: 2rem;
@@ -46,21 +44,49 @@ $background-color-light: #7d9cb7;
   background-color: $background-color;
 }
 
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-li {
+.friend-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 10px;
-  border-bottom: 1px solid $secondary-text;
   color: $text-color;
   font-weight: bold;
   font-size: 1.2rem;
+  border-bottom: 1px solid $secondary-text;
 
   &:last-child {
     border-bottom: none;
+  }
+}
+
+.see-checkins-button {
+  background-color: $box-color;
+  color: $text-color;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: $button-hover;
+  }
+}
+
+.checkins-list {
+  margin: 10px 0 0 10px;
+  list-style: none;
+  padding: 0;
+
+  li {
+    padding: 5px 0;
+    font-size: 1rem;
+    color: $secondary-text;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid $secondary-text;
+    }
   }
 }
 

@@ -1,0 +1,27 @@
+<div class="profile-container" *ngIf="user">
+    <div class="profile-box">
+      <h1 class="profile-title">Welcome to Your Profile</h1>
+      <div class="profile-details">
+        <p><strong>Hello, </strong> {{ user.displayName || 'User' }}</p>
+        <p><strong>Your Email:</strong> {{ user.email }}</p>
+      </div>
+      <button class="logout-button" (click)="logout()">Logout</button>
+      <button class="checkins-button" (click)="loadCheckIns()">View your check-ins</button>
+    </div>
+  
+    <!-- Check-ins List -->
+    <div class="checkins-list" *ngIf="showCheckIns">
+        <h2>Your Check-ins</h2>
+        <ul>
+          <li *ngFor="let checkIn of checkIns">
+            <strong>{{ checkIn.title }}</strong>
+            <p>{{ checkIn.location }}</p>
+            <button class="remove-checkin-button" (click)="onRemoveCheckIn(checkIn)">
+              Remove Check-In
+            </button>
+          </li>
+        </ul>
+        <button class="close-checkins-button" (click)="closeCheckIns()">Close</button>
+      </div>
+  </div>
+  
