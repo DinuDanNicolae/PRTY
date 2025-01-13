@@ -112,6 +112,11 @@ export class AppComponent implements OnInit {
     this.authService.isAuthenticated$.subscribe((authState) => {
       if (authState !== null) {
         this.isAuthenticated = authState;
+        if (authState) {
+          this.router.navigate(['/profile']); // Redirect to profile if authenticated
+        } else {
+          this.router.navigate(['/']); // Redirect to welcome if not authenticated
+        }
       }
     });
   }

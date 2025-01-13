@@ -1,24 +1,44 @@
 <div class="friends-container">
-    <div class="friends-box">
-      <h2 class="friends-title">Your Friends</h2>
-      <div class="friends-list">
-        <ul>
-          <li *ngFor="let friend of friends">{{ friend.username }}</li>
-        </ul>
-      </div>
-    </div>
-  
-    <div class="add-friend-box">
-      <h2 class="friends-title">Add a Friend</h2>
-      <div class="add-friend-form">
-        <input
-          nz-input
-          type="text"
-          placeholder="Enter friend's username"
-          [(ngModel)]="newFriendUsername"
-        />
-        <button nz-button nzType="primary" (click)="addFriend()">Add Friend</button>
-      </div>
+  <div class="friends-box">
+    <h2 class="friends-title">Your Friends</h2>
+    <div class="friends-list">
+      <ul>
+        <li *ngFor="let friend of friends">
+          <div class="friend-item">
+            <span class="friend-name">{{ friend.username }}</span>
+            <button
+              class="see-checkins-button"
+              (click)="toggleCheckins(friend)"
+            >
+              {{ friend.showCheckins ? 'Hide Check-ins' : 'See Check-ins' }}
+            </button>
+            <button class="remove-friend-button" (click)="removeFriend(friend.uid)">
+              Remove Friend
+            </button>
+          </div>
+          <!-- Dropdown list of check-ins -->
+          <ul class="checkins-list" *ngIf="friend.showCheckins">
+            <li *ngFor="let checkin of friend.checkins">
+              {{ checkin.title }} ({{ checkin.location }})
+            </li>
+          </ul>
+        </li>
+      </ul>
     </div>
   </div>
-  
+
+  <div class="add-friend-box">
+    <h2 class="friends-title">Add a Friend</h2>
+    <div class="add-friend-form">
+      <input
+        nz-input
+        type="text"
+        placeholder="Enter friend's username"
+        [(ngModel)]="newFriendUsername"
+      />
+      <button nz-button nzType="primary" (click)="addFriend()">
+        Add Friend
+      </button>
+    </div>
+  </div>
+</div>
