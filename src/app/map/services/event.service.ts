@@ -45,6 +45,7 @@ export class EventService {
     // Create an object with whatever fields you need
     const newCheckin = {
       title: title,
+      location: location,
     };
 
     await updateDoc(userDocRef, {

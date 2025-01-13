@@ -22,7 +22,6 @@
   transition: right 0.3s ease-in-out;
 }
 
-
 .event-tab.open {
   right: 0; 
 }
@@ -37,7 +36,6 @@
   font-size: 20px;
   cursor: pointer;
 }
-
 
 .locate-button {
   position: absolute;
@@ -62,7 +60,6 @@
   margin: 20px 0 0; /* adaugare spațiu de 20px sub butonul X */
   list-style: none;
 }
-
 
 .event-tab li {
   margin-bottom: 15px;
@@ -138,4 +135,25 @@
 
 .check-in-button:disabled:hover {
   transform: none; /* Prevent scaling when disabled */
+}
+
+.recenter-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  padding: 10px 15px;
+  background-color: #007bff; /* Button color */
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.recenter-btn:hover {
+  background-color: #0056b3; /* Darker blue on hover */
 }

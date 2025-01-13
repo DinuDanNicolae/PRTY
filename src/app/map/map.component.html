@@ -1,6 +1,8 @@
 <div class="map-container">
     <!-- loc pentru hartă -->
     <div #mapViewNode class="map-view"></div>
+
+    <button class="recenter-btn" (click)="recentreOnUser()">Recenter</button>
     <!-- tab pentru evenimente -->
     <div class="event-tab" [class.open]="eventsForLocation.length > 0 || selectedEvent">
         <!-- buton pentru închidere tab -->

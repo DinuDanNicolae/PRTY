@@ -54,7 +54,6 @@ export class MapComponent implements OnInit {
       this.mapLoadedEvent.emit(true);
 
       this.centerOnUserLocation();
-      this.addReturnToUserButton();
       this.loadEventsFromFirestore();
       this.setupClickHandler();
     });
@@ -156,16 +155,6 @@ export class MapComponent implements OnInit {
       symbol: markerSymbol,
     });
     this.graphicsLayer.add(graphic);
-  }
-
-  addReturnToUserButton() {
-    const button = document.createElement('button');
-    button.innerText = 'Recenter';
-    button.className = 'locate-button';
-    button.addEventListener('click', () => {
-      this.recentreOnUser();
-    });
-    document.body.appendChild(button);
   }
 
   recentreOnUser() {
