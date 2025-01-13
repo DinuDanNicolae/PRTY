@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Firestore, arrayUnion, collection, doc, getDoc, getDocs, updateDoc } from '@angular/fire/firestore';
+import { Firestore, arrayRemove, arrayUnion, collection, doc, getDoc, getDocs, updateDoc } from '@angular/fire/firestore';
 import { Auth } from '@angular/fire/auth';
 
 @Component({
@@ -27,33 +27,37 @@ export class FriendsComponent implements OnInit {
       console.error('User is not authenticated!');
       return;
     }
-
+  
     try {
       const userDocRef = doc(this.firestore, `users/${currentUserUid}`);
       const userDoc = await getDoc(userDocRef);
-
+  
       if (!userDoc.exists()) {
         console.error('User document does not exist!');
         return;
       }
-
+  
       const userData = userDoc.data() as any;
       const friendUids = userData.friends || [];
-
-      // Fetch each friend's data
-      this.friends = [];
+  
+      this.friends = []; // Clear the friends array before reloading
+  
       for (const friendUid of friendUids) {
         const friendDocRef = doc(this.firestore, `users/${friendUid}`);
         const friendDoc = await getDoc(friendDocRef);
-
+  
         if (friendDoc.exists()) {
-          this.friends.push(friendDoc.data());
+          this.friends.push({
+            uid: friendUid,
+            ...friendDoc.data(),
+          });
         }
       }
     } catch (error) {
       console.error('Error fetching friends:', error);
     }
   }
+  
 
   toggleCheckins(friend: any) {
     friend.showCheckins = !friend.showCheckins;
@@ -113,4 +117,33 @@ export class FriendsComponent implements OnInit {
     this.loadFriends(); 
   }
   
+  async removeFriend(friendUid: string) {
+    console.log(friendUid);
+    const currentUserUid = this.auth.currentUser?.uid;
+    if (!currentUserUid) {
+      console.error('User is not authenticated!');
+      return;
+    }
+  
+    try {
+      const userRef = doc(this.firestore, `users/${currentUserUid}`);
+      const friendRef = doc(this.firestore, `users/${friendUid}`);
+
+      await updateDoc(userRef, {
+        friends: arrayRemove(friendUid),
+      });
+  
+      await updateDoc(friendRef, {
+        friends: arrayRemove(currentUserUid),
+      });
+  
+      this.friends = this.friends.filter((friend) => friend.uid !== friendUid);
+  
+      alert('Friend removed successfully!');
+    } catch (error) {
+      console.error('Error removing friend:', error);
+      alert('Failed to remove friend. Please try again.');
+    }
+  }
+
 }

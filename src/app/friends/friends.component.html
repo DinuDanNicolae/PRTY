@@ -12,6 +12,9 @@
             >
               {{ friend.showCheckins ? 'Hide Check-ins' : 'See Check-ins' }}
             </button>
+            <button class="remove-friend-button" (click)="removeFriend(friend.uid)">
+              Remove Friend
+            </button>
           </div>
           <!-- Dropdown list of check-ins -->
           <ul class="checkins-list" *ngIf="friend.showCheckins">
