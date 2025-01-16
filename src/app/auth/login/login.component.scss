@@ -1,12 +1,10 @@
-// Color Palette
-$background-color: #1b263b; // Dark blue
-$box-color: #415a77;        // Medium blue for box background
-$text-color: #e0e1dd;       // Light gray for text
-$secondary-text: #778da9;   // Muted gray for labels and borders
-$button-hover: darken(#415a77, 10%); // Darker hover effect for buttons
+$background-color: #1b263b;
+$box-color: #415a77;
+$text-color: #e0e1dd;
+$secondary-text: #778da9;
+$button-hover: darken(#415a77, 10%);
 $background-color-light: #7d9cb7;
 
-// General styles
 :host {
   display: flex;
   justify-content: center;

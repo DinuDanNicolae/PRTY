@@ -157,6 +157,5 @@ def split_date_and_ora(date_time_raw):
     # daca nu am gasit nimic, returnez textul 
     return date_time_raw.strip(), ""
 
-
 if __name__ == "__main__":
     scrape_iabilet_events_no_description()

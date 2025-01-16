@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Import CommonModule for *ngIf
+import { CommonModule } from '@angular/common';
 import { Auth, signOut, User } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 
@@ -28,6 +28,4 @@ import { Router } from '@angular/router';
   ],
 })
 export class HomeComponent {
-  
-  
 }

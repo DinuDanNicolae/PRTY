@@ -52,6 +52,13 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin: 10px 0;
   }
+
+  .check-ins-title {
+    color: #e0e1dd;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    font-weight: bold;
+  }
   
   .logout-button:hover,
   .checkins-button:hover,
@@ -59,6 +66,7 @@
     background-color: #2d4a66;
     transform: scale(1.05);
   }
+  
   
   .checkins-list {
     background-color: #1b263b;

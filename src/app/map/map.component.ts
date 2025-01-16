@@ -108,7 +108,6 @@ export class MapComponent implements OnInit {
     });
   }
   
-  
   closeTab() {
     this.eventsForLocation = [];
     this.selectedEvent = null;
@@ -174,11 +173,9 @@ export class MapComponent implements OnInit {
       const data = await response.json();
 
       const events = data.documents.map((doc: any) => {
-        // e.g. "projects/prty-2cc91/databases/(default)/documents/events/56tj8abEEIN6GVLuWYcx"
         const fullPath: string = doc.name; 
-        // last part after the final slash
         const docId = fullPath.split('/').pop();
-  
+
         return {
           docId,  // Store it here
           Titlu: doc.fields.Titlu.stringValue,
@@ -274,14 +271,10 @@ export class MapComponent implements OnInit {
   }
 
   private calculateMarkerSize(checkins: number): number {
-    // A simple formula: base 10px + 2px for each user
-    // Adjust as you like
     return 10 + checkins * 5;
   }
 
   private calculateOutlineWidth(checkins: number): number {
-    // A simple formula: base 2px + 1px for each user
-    // Adjust as you like
     return 1 + checkins * 1;
   }
 
@@ -289,11 +282,11 @@ export class MapComponent implements OnInit {
     if (checkins === 0) {
       return 'orange';
     } else if (checkins < 5) {
-      return '#FFA500'; // slightly different orange
+      return '#FFA500';
     } else if (checkins < 10) {
       return 'red';
     } else {
-      return 'purple'; // a color for 10+ checkins
+      return 'purple';
     }
   }
 
@@ -314,8 +307,8 @@ export class MapComponent implements OnInit {
 
       await this.eventService.addCheckinToUserDoc(
         currentUserUid,
-        event.Adresa,    // or event.Locatie
-        event.Titlu      // optional event title
+        event.Adresa,
+        event.Titlu
       );
 
       // Locally mark this event as checked in

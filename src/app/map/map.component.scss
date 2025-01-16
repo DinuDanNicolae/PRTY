@@ -57,7 +57,7 @@
 }
 .event-tab ul {
   padding: 0;
-  margin: 20px 0 0; /* adaugare spațiu de 20px sub butonul X */
+  margin: 20px 0 0;
   list-style: none;
 }
 
@@ -108,33 +108,33 @@
 }
 
 .check-in-button {
-  background-color: #007bff; /* Primary blue */
+  background-color: #007bff;
   color: white;
   font-size: 14px;
-  font-weight: bold; /* Emphasize the button text */
+  font-weight: bold;
   padding: 10px 15px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 10px; /* Spacing above the button */
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  margin-top: 10px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .check-in-button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
-  transform: scale(1.05); /* Slightly enlarge the button */
+  background-color: #0056b3;
+  transform: scale(1.05);
 }
 
 .check-in-button:disabled {
-  background-color: #d6d6d6; /* Gray for disabled state */
-  color: #a0a0a0; /* Lighter text color */
-  cursor: not-allowed; /* Indicate unclickable */
-  box-shadow: none; /* Remove shadow for disabled button */
+  background-color: #d6d6d6;
+  color: #a0a0a0;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 .check-in-button:disabled:hover {
-  transform: none; /* Prevent scaling when disabled */
+  transform: none;
 }
 
 .recenter-btn {
@@ -143,7 +143,7 @@
   left: 10px;
   z-index: 1000;
   padding: 10px 15px;
-  background-color: #007bff; /* Button color */
+  background-color: #007bff;
   color: white;
   font-size: 14px;
   font-weight: bold;
@@ -155,5 +155,5 @@
 }
 
 .recenter-btn:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+  background-color: #0056b3;
 }
