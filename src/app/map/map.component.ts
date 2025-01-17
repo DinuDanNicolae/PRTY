@@ -218,7 +218,7 @@ export class MapComponent implements OnInit {
     const specificAddress = `${address}, București, România`.trim();
     console.log('Geocodăm adresa completată:', specificAddress);
   
-    const googleApiKey = 'NO_API_KEY'; // For security reasons, this is not included in the code
+    const googleApiKey = 'AIzaSyCovI73yXQQec4aitK4VerBAMRbIvPMe1Y';
     const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
       specificAddress
     )}&key=${googleApiKey}`;
